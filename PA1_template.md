@@ -1,11 +1,5 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
-    
-author: Kitoogo Fredrick
----
+# Reproducible Research: Peer Assessment 1
+Kitoogo Fredrick  
 The overall goal of this assignment is to demonstrate the capability in 
 Rerproducible Research and ultimately writing a report in a single
 R markdown document that can be processed by knitr and be transformed into an HTML file

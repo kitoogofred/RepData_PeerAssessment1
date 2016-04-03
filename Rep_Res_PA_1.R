@@ -1,28 +1,24 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
-    
-author: Kitoogo Fredrick
----
-The overall goal of this assignment is to demonstrate the capability in 
-Rerproducible Research and ultimately writing a report in a single
-R markdown document that can be processed by knitr and be transformed into an HTML file
+## Reproducibe Research Project 1
+## Fredrick Kitoogo
+## The overall goal of this assignment is to demonstrate the capability in 
+## Rerproducible Research and ultimately writing a report in a single
+## R markdown document that can be processed by knitr and be transformed into an HTML file
 
-## Load Requisite Packages
-```R
-## ----- Loading requisite packages -----------
+## The Data from a personal activity monitoring device. 
+## This device collects data at 5 minute intervals through out the day. 
+## The data consists of two months of data from an anonymous individual collected during 
+## the months of October and November, 2012 and include the number of steps taken 
+## in 5 minute intervals each day.
+
+## Load the required pacages
 library("ggplot2", lib.loc="\\\\Rsv-nita-01/USER$/Fredrick.Kitoogo/R/win-library/3.2")
 library("scales", lib.loc="C:/Program Files/R/R-3.2.4/library")
 library("plyr", lib.loc="C:/Program Files/R/R-3.2.4/library")
 library("dplyr", lib.loc="\\\\Rsv-nita-01/USER$/Fredrick.Kitoogo/R/win-library/3.2")
 library("chron", lib.loc="\\\\Rsv-nita-01/USER$/Fredrick.Kitoogo/R/win-library/3.2")
-```
 
-## Loading and preprocessing the data
 
-```R
+#===========================================================================================
 # Loading and Processing the Data
 ## 1. Read the data into a data frame 
 unzip(zipfile="repdata-data-activity.zip") ## first unzip the file
@@ -30,11 +26,8 @@ activity <- read.csv("activity.csv", header = TRUE)
 
 ## 2. Process and Transform the data frame into a format suitable for proper analysis
 activity$date <- as.Date(activity$date) ## the date column to date
-```
-
-## What is mean total number of steps taken per day?
-
-```R
+#============================================================================================
+# What is mean total number of steps taken per day?
 ## 1. Calculate the total number of steps taken per day and store the result into a 
 ## new data frame
 activity_agg_per_Day <- aggregate(steps ~ date, data = activity, 
@@ -58,21 +51,13 @@ ggplot(data = activity_agg_per_Day, aes(x = date, y = steps)) +
   labs(x = "Date", y="Total number of Steps") +
   theme_bw() + theme(axis.text.x = element_text(angle=90, vjust=1))
 dev.off() ## close the plotting device
-```
 
-![Histogram Plot](hist_Tot_Steps.png) 
-
-```R
 ## 3. Calculate and report the mean and median of the total number of steps taken per day
 mean_steps <- mean(activity_agg_per_Day$steps, na.rm = TRUE) # Mean = 10766.19
 median_steps <- median(activity_agg_per_Day$steps, na.rm = TRUE) # Median = 10765
-```
-* The Mean = 10766
-* The Median = 10765
+#============================================================================================
 
-## What is the average daily activity pattern?
-
-```R
+# What is the average daily activity pattern?
 ## 1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) 
 ## and the average number of steps taken, averaged across all days (y-axis)
 activity_avg_per_Interval <- aggregate(steps ~ interval, data = activity, 
@@ -87,23 +72,15 @@ ggplot(data = activity_avg_per_Interval, aes(x = interval, y = steps)) +
   labs(x = "5-minute intervals", y="Average Number of Steps Taken") +
   theme_bw() 
 dev.off() ## close the plotting device
-```
-![Time Series Plot](ts_Avg_Steps.png)
 
-```R
 ## 2. Which 5-minute interval, on average across all the days in the dataset, 
 ## contains the maximum number of steps?
 max_Avg <- activity_avg_per_Interval[which.max(activity_avg_per_Interval$steps),]
+###     interval    steps
+###104      835 206.1698
+#=============================================================================================
 
-```
-Maximum Average Number of steps
-
-*         Interval  steps
-**  104      835 206.1698
-
-## Imputing missing values
-
-```R
+# Imputing missing values
 ## 1. Calculate and report the total number of missing values in the dataset 
 ## (i.e. the total number of rows with NAs)
 missing_No <- sum(is.na(activity)) # missing_No = 2304
@@ -149,10 +126,7 @@ ggplot(data = new_activity_agg_per_Day, aes(x = date, y = steps)) +
   labs(x = "Date", y="Total number of Steps") +
   theme_bw() + theme(axis.text.x = element_text(angle=90, vjust=1))
 dev.off() ## close the plotting device
-```
-![Histogram Plot - Imputed Missing Values](new_hist_Tot_Steps.png)
 
-```R
 ## 3. Calculate and report the mean and median of the total number of steps taken per day
 new_mean_steps <- mean(new_activity_agg_per_Day$steps, na.rm = TRUE) # Mean = 10765.64
 new_median_steps <- median(new_activity_agg_per_Day$steps, na.rm = TRUE) # Median = 10762
@@ -160,13 +134,12 @@ new_median_steps <- median(new_activity_agg_per_Day$steps, na.rm = TRUE) # Media
 ## compute the impact on both the mean and medians before and after
 impact_mean <- new_mean_steps - mean_steps ## -0.549335
 impact_median <- new_median_steps - median_steps ## -3
-```
-* By imputing the missing values, the mean and median lower (decrease by 0.549335 and 3 respectively)
 
+## by imputing the missing values, the mean and median lower
+#============================================================================================
 
-## Are there differences in activity patterns between weekdays and weekends?
+# Are there differences in activity patterns between weekdays and weekends?
 
-```R
 ## 1. Create a new factor variable in the dataset with two levels - "weekday" and "weekend" 
 ## indicating whether a given date is a weekday or weekend day.
 ## use the chron package (function is.weekend) to isolate a weekday and weekend
@@ -197,10 +170,10 @@ ggplot(data = new_activity_avg_per_Interval, aes(x = interval, y = steps)) +
         strip.text.y = element_text(size=12, face="bold"),
         strip.background = element_rect(fill="burlywood1"))
 dev.off() ## close the plotting device
-```
-![Time Series Plot - Panelled](new_ts_Avg_Steps.png)
 
-* Yes, there are differences in activity patterns between weekdays and weekends
+## Yes, there are differences in activity patterns between weekdays and weekends
+
+
 
 
 
